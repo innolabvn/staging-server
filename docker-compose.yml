@@ -20,4 +20,5 @@ services:
     ports:
       - "2222:22"
       - "8080:80"
+      - "5000:5000"
     restart: unless-stopped 

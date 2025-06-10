@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Dict, List, Union
 
 IGNORE_PATTERNS = ['.git', '__pycache__', '.pytest_cache', '.venv', 'venv']
-READABLE_EXTENSIONS = ['py', 'js', 'ts', 'tsx', 'java', 'go', 'html', 'css', 'json', 'md']
+READABLE_EXTENSIONS = ['py', 'js', 'ts', 'tsx', 'java', 'go', 'html', 'css', 'json', 'yml', 'yaml']
 
 def read_file_content(file_path: Path, max_chars: int = 3000) -> str:
     try:
