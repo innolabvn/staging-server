@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  device-info-api:
+    build:
+      context: ./collect_device
+      dockerfile: Dockerfile
+    container_name: device_info_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./collect_device:/app
+
+  ssh-server:
+    build:
+      context: ./DockerBuildGenerator
+      dockerfile: Dockerfile
+    container_name: ubuntu_ssh_server
+    privileged: true
+    ports:
+      - "2222:22"
+      - "8080:80"
+    restart: unless-stopped 

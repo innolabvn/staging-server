@@ -1,9 +1,0 @@
-services:
-  ssh-server:
-    build: .
-    container_name: ubuntu-ssh-server
-    privileged: true
-    ports:
-      - "2222:22"
-      - "8080:80"
-    restart: unless-stopped
