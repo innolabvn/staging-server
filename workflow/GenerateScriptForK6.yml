@@ -1,0 +1,2265 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: DockerBuildGenerator 2
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/gemini:0.2.4@1dc8cd4a3198584fd7639023951f388fff023caa234a4bdb8bba69d6091c2e64
+kind: app
+version: 0.2.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: agent
+        targetType: end
+      id: 1748943449585-source-1748943619703-target
+      selected: false
+      source: '1748943449585'
+      sourceHandle: source
+      target: '1748943619703'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: agent
+      id: 1748838766761-source-1748943449585-target
+      selected: false
+      source: '1748838766761'
+      sourceHandle: source
+      target: '1748943449585'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: llm
+      id: 1748943301158-source-1748838766761-target
+      selected: false
+      source: '1748943301158'
+      sourceHandle: source
+      target: '1748838766761'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: agent
+      id: 1749624159626-source-17496256259110-target
+      selected: false
+      source: '1749624159626'
+      sourceHandle: source
+      target: '17496256259110'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: agent
+        targetType: end
+      id: 17496256259110-source-1749624330161-target
+      selected: false
+      source: '17496256259110'
+      sourceHandle: source
+      target: '1749624330161'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: document-extractor
+      id: 1748527670044-source-1749632409530-target
+      source: '1748527670044'
+      sourceHandle: source
+      target: '1749632409530'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: document-extractor
+        targetType: llm
+      id: 1749632409530-source-1749632354583-target
+      source: '1749632409530'
+      sourceHandle: source
+      target: '1749632354583'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: llm
+      id: 1749632354583-source-1749632961954-target
+      source: '1749632354583'
+      sourceHandle: source
+      target: '1749632961954'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1749632961954-source-1749632974802-target
+      source: '1749632961954'
+      sourceHandle: source
+      target: '1749632974802'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          - document
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          label: urs_document
+          max_length: 10
+          options: []
+          required: true
+          type: file-list
+          variable: urs_document
+        - label: url
+          max_length: 256
+          options: []
+          required: true
+          type: text-input
+          variable: url
+      height: 116
+      id: '1748527670044'
+      position:
+        x: -76.81550693951354
+        y: 844.0343173126894
+      positionAbsolute:
+        x: -76.81550693951354
+        y: 844.0343173126894
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.0-flash
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: da059d5b-db26-4c11-8ec2-f22cf3b74496
+          role: system
+          text: "You are a senior DevOps engineer responsible for generating production-grade,\
+            \ scalable Docker infrastructure for a multi-service application.\nProject\
+            \ Structure:\n~/app/\n├── docker/\n│   ├── docker-compose.yaml       \
+            \   # Central Docker orchestration\n│   ├── Dockerfile.<service>     \
+            \    # One Dockerfile per service (e.g., Dockerfile.frontend Dockerfile.backend/,\
+            \ etc.)\n└── source/                          # Contains service folders\
+            \ (e.g., frontend/, backend/, etc.)\n\nImportant Path Rule:\nIn docker-compose.yaml,\
+            \ any dockerfile: path must be relative to its context \nExample:\nbuild:\n\
+            \  context: ../source\n  dockerfile: ../docker/Dockerfile.<service>\n\n\
+            Requirements:\nDockerfiles:\nFor each actual service folder under source/:\n\
+            Create docker/Dockerfile.<service>\nUse production-grade practices:\n\
+            Multi-stage builds\nSmall base images (node:alpine, python:slim, etc.)\n\
+            Layer caching\nExpose relevant ports (e.g., 8080 for frontend, 3000 for\
+            \ backend)\nUse ../source as build context\ndocker-compose.yaml:\nLocated\
+            \ at ~/app/docker/docker-compose.yaml, it must:\nDefine only the services\
+            \ present in source/\nSet:\ncontext: ../source\ndockerfile: ../docker/Dockerfile.<service>\
+            \ (relative to context)\nMap internal service ports to host\nAdd depends_on\
+            \ for inter-service dependencies\nUse internal DNS names (e.g., http://backend:5000)\n\
+            Declare a networks: block using the bridge driver\nRestrictions:\nDo not\
+            \ include nginx.conf\nDo not use NGINX reverse proxy\nDo not reference\
+            \ external build tools or platforms (e.g., Skaffold, BuildKit cache mounts)\n\
+            Output Format:\nReturn everything as a single code block. Clearly label\
+            \ each section:\n# Dockerfile.<service>\n...\n\n# docker-compose.yaml\n\
+            ...\n\nOnly include entries for services that are actually detected as\
+            \ directories in the source/ folder."
+        selected: false
+        structured_output:
+          schema:
+            additionalProperties: false
+            properties:
+              docker_compose_file:
+                description: docker-compose for starting services
+                type: string
+              dockerfile:
+                description: containerization scripts for applications
+                type: string
+              nginx_config:
+                description: nginx config file if neccessary
+                type: string
+            required:
+            - dockerfile
+            - docker_compose_file
+            type: object
+        structured_output_enabled: false
+        title: Docker Compose Writer
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1748838766761'
+      position:
+        x: 333
+        y: 534
+      positionAbsolute:
+        x: 333
+        y: 534
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        desc: ''
+        headers: ''
+        method: get
+        params: git_url:{{#1748527670044.source_code#}}
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP Request
+        type: http-request
+        url: http://192.168.5.11:8000/source-info
+        variables: []
+      height: 140
+      id: '1748943301158'
+      position:
+        x: 30
+        y: 534
+      positionAbsolute:
+        x: 30
+        y: 534
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        agent_parameters:
+          instruction:
+            type: constant
+            value: "You are a Senior DevOps Engineer automating deployment on a remote\
+              \ server via SSH.\nUse the SSH Command tool with the following parameters:\n\
+              host: {{#1748527670044.ssh_host#}}\nport: {{#1748527670044.ssh_port#}}\n\
+              username: {{#1748527670044.ssh_user#}}\npassword: {{#1748527670044.ssh_password#}}\n\
+              Your task is to perform the following steps safely, idempotently, and\
+              \ completely.\nAll application files must be placed under a structured\
+              \ directory based on this context: {{#1748838766761.text#}}\nThe structure\
+              \ must be: If in folder backend & frontend or have docker-compose.yml,\
+              \ then copy that into folder docker.\n~/app/\n├── docker/\n│   ├── docker-compose.yaml\
+              \ (based on {{#1748838766761.text#}})\n│   └── Dockerfile.<service>\
+              \ (based on {{#1748838766761.text#}})\n└── source/ (cloned app code)\n\
+              \n\n\U0001F433 Step 1: Verify Docker and Docker Compose v2\ndocker --version\n\
+              docker compose version\nsystemctl start docker || (dockerd > /var/log/dockerd.log\
+              \ 2>&1 &)\ndocker ps\n\n\n\U0001F4E6 Step 2: Prepare Application Folder\n\
+              mkdir -p ~/app/docker ~/app/source\nrm -rf ~/app/source/* ~/app/docker/*\n\
+              \n\n\U0001F504 Step 3: Clone Repository\necho \"[3] \U0001F504 Cloning\
+              \ source code...\"\n\nREPO=\"{{#1748527670044.source_code#}}\"\nDEST=~/app/source\n\
+              \nattempt=0\nmax_attempts=3\n\nwhile [ $attempt -lt $max_attempts ];\
+              \ do\n  echo \"Attempt $(($attempt+1)) of $max_attempts...\"\n  rm -rf\
+              \ \"$DEST\"\n  mkdir -p \"$DEST\"\n  git clone \"$REPO\" \"$DEST\" &&\
+              \ [ -n \"$(ls -A $DEST 2>/dev/null)\" ] && break\n  echo \"❌ Clone failed\
+              \ or source folder is empty.\"\n  attempt=$((attempt+1))\n  sleep 3\n\
+              done\n\nif [ ! -d \"$DEST/.git\" ] || [ -z \"$(ls -A $DEST 2>/dev/null)\"\
+              \ ]; then\n  echo \"\U0001F6A9 Failed to clone repository after $max_attempts\
+              \ attempts.\"\n  exit 1\nfi\n\necho \"✅ Repository cloned successfully.\"\
+              \n\n⚠️ Fixes included: Ensure DEST is created before clone, avoid copying\
+              \ to a non-existent or read-only location, and properly verify content.\n\
+              \n\U0001F4CD Step 4: Write Dockerfile\ncat <<EOF > ~/app/docker/Dockerfile.frontend\n\
+              {{#1748838766761.text#}}\nEOF\n\n✅ Ensure COPY commands correctly reference\
+              \ ../source from the ~/app/docker context.\n\n\U0001F4C1 Step 5: Write\
+              \ docker-compose.yaml\ncat <<EOF > ~/app/docker/docker-compose.yaml\n\
+              {{#1748838766761.text#}}\nEOF\n\n✅ Ensure paths:\ncontext: ../source\n\
+              dockerfile: ../docker/Dockerfile.frontend\n\n\U0001F680 Step 6: Start\
+              \ Application\ncd ~/app/docker\ndocker compose up -d --build\n\n\n✅\
+              \ Step 7: Confirm Services Are Running\ndocker ps --format '{{.Names}}:\
+              \ {{.Status}}'\n\nIf no container is running or status is not \"Up\"\
+              , log the full docker-compose output and exit with an error.\n\n✅ Step\
+              \ 8: Run Final Docker Command\necho \"[8] \U0001F527 Running final docker\
+              \ container (non-interactive mode)...\"\ndocker run --rm --privileged\
+              \ --network=host \\\n-v /var/run/docker.sock:/var/run/docker.sock docker-frontend\
+              \ > ~/app/docker/frontend.log 2>&1 &\necho \"✅ docker-frontend launched\
+              \ in background. Logs are in ~/app/docker/frontend.log.\"\n\n✅ You must\
+              \ include this command, run it after services are confirmed in Step\
+              \ 7, and capture its output or any errors."
+          maximum_iterations:
+            type: constant
+            value: 7
+          model:
+            type: constant
+            value:
+              completion_params:
+                temperature: 0
+              mode: chat
+              model: gemini-2.0-flash-001
+              model_type: llm
+              provider: langgenius/gemini/google
+              type: model-selector
+          query:
+            type: constant
+            value: "You are a Senior DevOps Engineer automating deployment on a remote\
+              \ server via SSH.\nUse the SSH Command tool with the following parameters:\n\
+              host: {{#1748527670044.ssh_host#}}\nport: {{#1748527670044.ssh_port#}}\n\
+              username: {{#1748527670044.ssh_user#}}\npassword: {{#1748527670044.ssh_password#}}\n\
+              Your task is to perform the following steps safely, idempotently, and\
+              \ completely.\nAll application files must be placed under a structured\
+              \ directory based on this context: {{#1748838766761.text#}}\nThe structure\
+              \ must be:\n~/app/\n├── docker/\n│   ├── docker-compose.yaml (based\
+              \ on {{#1748838766761.text#}})\n│   └── Dockerfile.frontend (based on\
+              \ {{#1748838766761.text#}})\n└── source/ (cloned app code)\n\n\n\U0001F433\
+              \ Step 1: Verify Docker and Docker Compose v2\ndocker --version\ndocker\
+              \ compose version\nsystemctl start docker || (dockerd > /var/log/dockerd.log\
+              \ 2>&1 &)\ndocker ps\n\n\n\U0001F4E6 Step 2: Prepare Application Folder\n\
+              mkdir -p ~/app/docker ~/app/source\nrm -rf ~/app/source/* ~/app/docker/*\n\
+              \n\n\U0001F504 Step 3: Clone Repository\necho \"[3] \U0001F504 Cloning\
+              \ source code...\"\n\nREPO=\"{{#1748527670044.source_code#}}\"\nDEST=~/app/source\n\
+              \nattempt=0\nmax_attempts=3\n\nwhile [ $attempt -lt $max_attempts ];\
+              \ do\n  echo \"Attempt $(($attempt+1)) of $max_attempts...\"\n  rm -rf\
+              \ \"$DEST\"\n  mkdir -p \"$DEST\"\n  git clone \"$REPO\" \"$DEST\" &&\
+              \ [ -n \"$(ls -A $DEST 2>/dev/null)\" ] && break\n  echo \"❌ Clone failed\
+              \ or source folder is empty.\"\n  attempt=$((attempt+1))\n  sleep 3\n\
+              done\n\nif [ ! -d \"$DEST/.git\" ] || [ -z \"$(ls -A $DEST 2>/dev/null)\"\
+              \ ]; then\n  echo \"\U0001F6A9 Failed to clone repository after $max_attempts\
+              \ attempts.\"\n  exit 1\nfi\n\necho \"✅ Repository cloned successfully.\"\
+              \n\n⚠️ Fixes included: Ensure DEST is created before clone, avoid copying\
+              \ to a non-existent or read-only location, and properly verify content.\n\
+              \n\U0001F4CD Step 4: Write Dockerfile\ncat <<EOF > ~/app/docker/Dockerfile.frontend\n\
+              {{#1748838766761.text#}}\nEOF\n\n✅ Ensure COPY commands correctly reference\
+              \ ../source from the ~/app/docker context.\n\n\U0001F4C1 Step 5: Write\
+              \ docker-compose.yaml\ncat <<EOF > ~/app/docker/docker-compose.yaml\n\
+              {{#1748838766761.text#}}\nEOF\n\n✅ Ensure paths:\ncontext: ../source\n\
+              dockerfile: ../docker/Dockerfile.frontend\n\n\U0001F680 Step 6: Start\
+              \ Application\ncd ~/app/docker\ndocker compose up -d --build\n\n\n✅\
+              \ Step 7: Confirm Services Are Running\ndocker ps --format '{{.Names}}:\
+              \ {{.Status}}'\n\nIf no container is running or status is not \"Up\"\
+              , log the full docker-compose output and exit with an error.\n\n✅ Step\
+              \ 8: Run Final Docker Command\necho \"[8] \U0001F527 Running final docker\
+              \ container (non-interactive mode)...\"\ndocker run --rm --privileged\
+              \ --network=host \\\n-v /var/run/docker.sock:/var/run/docker.sock docker-frontend\
+              \ > ~/app/docker/frontend.log 2>&1 &\necho \"✅ docker-frontend launched\
+              \ in background. Logs are in ~/app/docker/frontend.log.\"\n\n✅ You must\
+              \ include this command, run it after services are confirmed in Step\
+              \ 7, and capture its output or any errors."
+          tools:
+            type: constant
+            value:
+            - enabled: true
+              extra:
+                description: Execute commands on remote servers via SSH
+              parameters:
+                command:
+                  auto: 1
+                  value: null
+                host:
+                  auto: 1
+                  value: null
+                passphrase:
+                  auto: 1
+                  value: null
+                password:
+                  auto: 1
+                  value: null
+                port:
+                  auto: 1
+                  value: null
+                private_key:
+                  auto: 1
+                  value: null
+                username:
+                  auto: 1
+                  value: null
+              provider_name: stvlynn/ssh/ssh
+              schemas:
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The hostname or IP address of the remote server
+                  ja_JP: The hostname or IP address of the remote server
+                  pt_BR: O nome do host ou endereço IP do servidor remoto
+                  zh_Hans: 远程服务器的主机名或IP地址
+                label:
+                  en_US: Host
+                  ja_JP: Host
+                  pt_BR: Host
+                  zh_Hans: 主机
+                llm_description: The hostname or IP address of the remote server to
+                  connect to via SSH.
+                max: null
+                min: null
+                name: host
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The SSH port of the remote server (default 22)
+                  ja_JP: The SSH port of the remote server (default 22)
+                  pt_BR: A porta SSH do servidor remoto (padrão 22)
+                  zh_Hans: 远程服务器的SSH端口（默认22）
+                label:
+                  en_US: Port
+                  ja_JP: Port
+                  pt_BR: Porta
+                  zh_Hans: 端口
+                llm_description: The SSH port of the remote server. Default is 22.
+                max: null
+                min: null
+                name: port
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: number
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The username to authenticate with
+                  ja_JP: The username to authenticate with
+                  pt_BR: O nome de usuário para autenticação
+                  zh_Hans: 用于认证的用户名
+                label:
+                  en_US: Username
+                  ja_JP: Username
+                  pt_BR: Nome de usuário
+                  zh_Hans: 用户名
+                llm_description: The username to authenticate with on the remote server.
+                max: null
+                min: null
+                name: username
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: password
+                form: form
+                human_description:
+                  en_US: Choose between password or private key authentication
+                  ja_JP: Choose between password or private key authentication
+                  pt_BR: Escolha entre autenticação por senha ou chave privada
+                  zh_Hans: 选择密码或私钥认证
+                label:
+                  en_US: Authentication Type
+                  ja_JP: Authentication Type
+                  pt_BR: Tipo de Autenticação
+                  zh_Hans: 认证类型
+                llm_description: The authentication method to use (password or private
+                  key).
+                max: null
+                min: null
+                name: auth_type
+                options:
+                - label:
+                    en_US: Password
+                    ja_JP: Password
+                    pt_BR: Senha
+                    zh_Hans: 密码
+                  value: password
+                - label:
+                    en_US: Private Key
+                    ja_JP: Private Key
+                    pt_BR: Chave Privada
+                    zh_Hans: 私钥
+                  value: key
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: select
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The password for password authentication (required if auth_type
+                    is password)
+                  ja_JP: The password for password authentication (required if auth_type
+                    is password)
+                  pt_BR: A senha para autenticação por senha (obrigatório se o tipo
+                    de autenticação for senha)
+                  zh_Hans: 用于密码认证的密码（如果认证类型为密码则必填）
+                label:
+                  en_US: Password
+                  ja_JP: Password
+                  pt_BR: Senha
+                  zh_Hans: 密码
+                llm_description: The password for password authentication. Required
+                  if auth_type is password.
+                max: null
+                min: null
+                name: password
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The private key for key authentication (required if auth_type
+                    is key)
+                  ja_JP: The private key for key authentication (required if auth_type
+                    is key)
+                  pt_BR: A chave privada para autenticação por chave (obrigatório
+                    se o tipo de autenticação for chave)
+                  zh_Hans: 用于密钥认证的私钥（如果认证类型为私钥则必填）
+                label:
+                  en_US: Private Key
+                  ja_JP: Private Key
+                  pt_BR: Chave Privada
+                  zh_Hans: 私钥
+                llm_description: The private key content for key-based authentication.
+                  Required if auth_type is key.
+                max: null
+                min: null
+                name: private_key
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The passphrase for the private key (if the key is encrypted)
+                  ja_JP: The passphrase for the private key (if the key is encrypted)
+                  pt_BR: A frase-senha para a chave privada (se a chave estiver criptografada)
+                  zh_Hans: 私钥的密码（如果私钥已加密）
+                label:
+                  en_US: Passphrase
+                  ja_JP: Passphrase
+                  pt_BR: Frase-senha
+                  zh_Hans: 密钥口令
+                llm_description: The passphrase for the private key if it is encrypted.
+                  Optional.
+                max: null
+                min: null
+                name: passphrase
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The command to execute on the remote server
+                  ja_JP: The command to execute on the remote server
+                  pt_BR: O comando a ser executado no servidor remoto
+                  zh_Hans: 在远程服务器上执行的命令
+                label:
+                  en_US: Command
+                  ja_JP: Command
+                  pt_BR: Comando
+                  zh_Hans: 命令
+                llm_description: The command to execute on the remote server.
+                max: null
+                min: null
+                name: command
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: string
+              settings:
+                auth_type:
+                  value: password
+              tool_description: Execute commands on remote servers via SSH
+              tool_label: SSH Command Execution
+              tool_name: ssh
+              type: builtin
+            - enabled: true
+              extra:
+                description: A search engine tool built specifically for AI agents
+                  (LLMs), delivering real-time, accurate, and factual results at speed.
+              parameters:
+                days:
+                  auto: 1
+                  value: null
+                query:
+                  auto: 1
+                  value: null
+                search_depth:
+                  auto: 1
+                  value: null
+                time_range:
+                  auto: 1
+                  value: null
+                topic:
+                  auto: 1
+                  value: null
+              provider_name: langgenius/tavily/tavily
+              schemas:
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The search query you want to execute with Tavily.
+                  ja_JP: The search query you want to execute with Tavily.
+                  pt_BR: The search query you want to execute with Tavily.
+                  zh_Hans: 您想用 Tavily 执行的搜索查询。
+                label:
+                  en_US: Query
+                  ja_JP: Query
+                  pt_BR: Query
+                  zh_Hans: 查询
+                llm_description: The search query.
+                max: null
+                min: null
+                name: query
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: basic
+                form: llm
+                human_description:
+                  en_US: The depth of the search.
+                  ja_JP: The depth of the search.
+                  pt_BR: The depth of the search.
+                  zh_Hans: 搜索的深度。
+                label:
+                  en_US: Search Depth
+                  ja_JP: Search Depth
+                  pt_BR: Search Depth
+                  zh_Hans: 搜索深度
+                llm_description: The depth of the search. 'basic' for standard search,
+                  'advanced' for more comprehensive results.
+                max: null
+                min: null
+                name: search_depth
+                options:
+                - label:
+                    en_US: Basic
+                    ja_JP: Basic
+                    pt_BR: Basic
+                    zh_Hans: 基本
+                  value: basic
+                - label:
+                    en_US: Advanced
+                    ja_JP: Advanced
+                    pt_BR: Advanced
+                    zh_Hans: 高级
+                  value: advanced
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: select
+              - auto_generate: null
+                default: general
+                form: llm
+                human_description:
+                  en_US: The category of the search.
+                  ja_JP: The category of the search.
+                  pt_BR: The category of the search.
+                  zh_Hans: 搜索的类别。
+                label:
+                  en_US: Topic
+                  ja_JP: Topic
+                  pt_BR: Topic
+                  zh_Hans: 主题
+                llm_description: The category of the search. Options include 'general',
+                  'news', or 'finance'.
+                max: null
+                min: null
+                name: topic
+                options:
+                - label:
+                    en_US: General
+                    ja_JP: General
+                    pt_BR: General
+                    zh_Hans: 一般
+                  value: general
+                - label:
+                    en_US: News
+                    ja_JP: News
+                    pt_BR: News
+                    zh_Hans: 新闻
+                  value: news
+                - label:
+                    en_US: Finance
+                    ja_JP: Finance
+                    pt_BR: Finance
+                    zh_Hans: 金融
+                  value: finance
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: select
+              - auto_generate: null
+                default: 3
+                form: llm
+                human_description:
+                  en_US: The number of days back from the current date to include
+                    in the search results (only applicable when "topic" is "news").
+                  ja_JP: The number of days back from the current date to include
+                    in the search results (only applicable when "topic" is "news").
+                  pt_BR: The number of days back from the current date to include
+                    in the search results (only applicable when "topic" is "news").
+                  zh_Hans: 从当前日期起向前追溯的天数，以包含在搜索结果中（仅当"topic"为"news"时适用）。
+                label:
+                  en_US: Days
+                  ja_JP: Days
+                  pt_BR: Days
+                  zh_Hans: 天数
+                llm_description: The number of days back from the current date to
+                  include in the search results. Only applicable when "topic" is "news".
+                max: null
+                min: 1
+                name: days
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: number
+              - auto_generate: null
+                default: not_specified
+                form: llm
+                human_description:
+                  en_US: The time range back from the current date to filter results.
+                  ja_JP: The time range back from the current date to filter results.
+                  pt_BR: The time range back from the current date to filter results.
+                  zh_Hans: 从当前日期起向后筛选结果的时间范围。
+                label:
+                  en_US: Time Range
+                  ja_JP: Time Range
+                  pt_BR: Time Range
+                  zh_Hans: 时间范围
+                llm_description: The time range back from the current date to filter
+                  results. Options include 'not_specified', 'day', 'week', 'month',
+                  or 'year'.
+                max: null
+                min: null
+                name: time_range
+                options:
+                - label:
+                    en_US: Not Specified
+                    ja_JP: Not Specified
+                    pt_BR: Not Specified
+                    zh_Hans: 不指定
+                  value: not_specified
+                - label:
+                    en_US: Day
+                    ja_JP: Day
+                    pt_BR: Day
+                    zh_Hans: 天
+                  value: day
+                - label:
+                    en_US: Week
+                    ja_JP: Week
+                    pt_BR: Week
+                    zh_Hans: 周
+                  value: week
+                - label:
+                    en_US: Month
+                    ja_JP: Month
+                    pt_BR: Month
+                    zh_Hans: 月
+                  value: month
+                - label:
+                    en_US: Year
+                    ja_JP: Year
+                    pt_BR: Year
+                    zh_Hans: 年
+                  value: year
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: select
+              - auto_generate: null
+                default: 5
+                form: form
+                human_description:
+                  en_US: The maximum number of search results to return.
+                  ja_JP: The maximum number of search results to return.
+                  pt_BR: The maximum number of search results to return.
+                  zh_Hans: 要返回的最大搜索结果数。
+                label:
+                  en_US: Max Results
+                  ja_JP: Max Results
+                  pt_BR: Max Results
+                  zh_Hans: 最大结果数
+                llm_description: The maximum number of search results to return. Range
+                  is 1-20.
+                max: 20
+                min: 1
+                name: max_results
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: number
+              - auto_generate: null
+                default: 0
+                form: form
+                human_description:
+                  en_US: Include a list of query-related images in the response.
+                  ja_JP: Include a list of query-related images in the response.
+                  pt_BR: Include a list of query-related images in the response.
+                  zh_Hans: 在响应中包含与查询相关的图片列表。
+                label:
+                  en_US: Include Images
+                  ja_JP: Include Images
+                  pt_BR: Include Images
+                  zh_Hans: 包含图片
+                llm_description: When set to true, includes a list of query-related
+                  images in the response.
+                max: null
+                min: null
+                name: include_images
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: boolean
+              - auto_generate: null
+                default: 0
+                form: form
+                human_description:
+                  en_US: When include_images is True, adds descriptive text for each
+                    image.
+                  ja_JP: When include_images is True, adds descriptive text for each
+                    image.
+                  pt_BR: When include_images is True, adds descriptive text for each
+                    image.
+                  zh_Hans: 当 include_images 为 True 时，为每个图像添加描述文本。
+                label:
+                  en_US: Include Image Descriptions
+                  ja_JP: Include Image Descriptions
+                  pt_BR: Include Image Descriptions
+                  zh_Hans: 包含图片描述
+                llm_description: When include_images is True and this is set to true,
+                  adds descriptive text for each image.
+                max: null
+                min: null
+                name: include_image_descriptions
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: boolean
+              - auto_generate: null
+                default: 0
+                form: form
+                human_description:
+                  en_US: Include a short answer to the original query in the response.
+                  ja_JP: Include a short answer to the original query in the response.
+                  pt_BR: Include a short answer to the original query in the response.
+                  zh_Hans: 在响应中包含对原始查询的简短回答。
+                label:
+                  en_US: Include Answer
+                  ja_JP: Include Answer
+                  pt_BR: Include Answer
+                  zh_Hans: 包含答案
+                llm_description: When set to true, includes a short answer to the
+                  original query in the response.
+                max: null
+                min: null
+                name: include_answer
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: boolean
+              - auto_generate: null
+                default: 0
+                form: form
+                human_description:
+                  en_US: Include the cleaned and parsed HTML content of each search
+                    result.
+                  ja_JP: Include the cleaned and parsed HTML content of each search
+                    result.
+                  pt_BR: Include the cleaned and parsed HTML content of each search
+                    result.
+                  zh_Hans: 包含每个搜索结果的已清理和解析的HTML内容。
+                label:
+                  en_US: Include Raw Content
+                  ja_JP: Include Raw Content
+                  pt_BR: Include Raw Content
+                  zh_Hans: 包含原始内容
+                llm_description: When set to true, includes the cleaned and parsed
+                  HTML content of each search result.
+                max: null
+                min: null
+                name: include_raw_content
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: boolean
+              - auto_generate: null
+                default: null
+                form: form
+                human_description:
+                  en_US: A comma-separated list of domains to specifically include
+                    in the search results.
+                  ja_JP: A comma-separated list of domains to specifically include
+                    in the search results.
+                  pt_BR: A comma-separated list of domains to specifically include
+                    in the search results.
+                  zh_Hans: 要在搜索结果中特别包含的域的逗号分隔列表。
+                label:
+                  en_US: Include Domains
+                  ja_JP: Include Domains
+                  pt_BR: Include Domains
+                  zh_Hans: 包含域
+                llm_description: A comma-separated list of domains to specifically
+                  include in the search results.
+                max: null
+                min: null
+                name: include_domains
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: form
+                human_description:
+                  en_US: A comma-separated list of domains to specifically exclude
+                    from the search results.
+                  ja_JP: A comma-separated list of domains to specifically exclude
+                    from the search results.
+                  pt_BR: A comma-separated list of domains to specifically exclude
+                    from the search results.
+                  zh_Hans: 要从搜索结果中特别排除的域的逗号分隔列表。
+                label:
+                  en_US: Exclude Domains
+                  ja_JP: Exclude Domains
+                  pt_BR: Exclude Domains
+                  zh_Hans: 排除域
+                llm_description: A comma-separated list of domains to specifically
+                  exclude from the search results.
+                max: null
+                min: null
+                name: exclude_domains
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: string
+              settings:
+                exclude_domains:
+                  value: null
+                include_answer:
+                  value: 0
+                include_domains:
+                  value: null
+                include_image_descriptions:
+                  value: 0
+                include_images:
+                  value: 0
+                include_raw_content:
+                  value: 0
+                max_results:
+                  value: 5
+              tool_description: A search engine tool built specifically for AI agents
+                (LLMs), delivering real-time, accurate, and factual results at speed.
+              tool_label: Tavily Search
+              tool_name: tavily_search
+              type: builtin
+        agent_strategy_label: FunctionCalling
+        agent_strategy_name: function_calling
+        agent_strategy_provider_name: langgenius/agent/agent
+        desc: ''
+        output_schema: null
+        plugin_unique_identifier: langgenius/agent:0.0.15@89d496aa9b23fcd1ef9add8cfcbadeaeb4eb5c30ff8d76f7e6c9d59c46d2e2f5
+        selected: false
+        title: Agent
+        type: agent
+      height: 198
+      id: '1748943449585'
+      position:
+        x: 636
+        y: 534
+      positionAbsolute:
+        x: 636
+        y: 534
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1748943449585'
+          - text
+          variable: text
+        - value_selector:
+          - '1748838766761'
+          - text
+          variable: text
+        selected: false
+        title: End
+        type: end
+      height: 116
+      id: '1748943619703'
+      position:
+        x: 939
+        y: 534
+      positionAbsolute:
+        x: 939
+        y: 534
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.0-flash
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: 5fc8e316-53e6-481b-8b27-412887a8cda1
+          role: system
+          text: 'Role:
+
+            You are an expert DevOps assistant.
+
+            Action:
+
+            Check if Docker is already implemented. If yes, validate it and explain
+            how to run. If not, generate correct Dockerfile(s) and a docker-compose.yml
+            based on the existing services.
+
+            Context:
+
+            The source code is in {{#1748527670044.source_code#}}.
+
+            Feedback:
+
+            If Docker exists: how to run? (do not write more Docker)
+
+            If not: write Dockerfile(s) and docker-compose.yml to run all services
+            found.
+
+            Tuning:
+
+            Output must be short, clean, and production-ready. Avoid unnecessary explanation.
+            Focus only on working setup and correctness.'
+        selected: false
+        title: LLM 2
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1749624159626'
+      position:
+        x: 333
+        y: 298
+      positionAbsolute:
+        x: 333
+        y: 298
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1749624159626'
+          - text
+          variable: text
+        - value_selector:
+          - '17496256259110'
+          - text
+          variable: text2
+        selected: false
+        title: End 2
+        type: end
+      height: 116
+      id: '1749624330161'
+      position:
+        x: 939
+        y: 298
+      positionAbsolute:
+        x: 939
+        y: 298
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        agent_parameters:
+          instruction:
+            type: constant
+            value: "You are a Senior DevOps Engineer automating deployment on a remote\
+              \ server via SSH.\nUse the SSH Command tool with the following parameters:\n\
+              host: {{#1748527670044.ssh_host#}}\nport: {{#1748527670044.ssh_port#}}\n\
+              username: {{#1748527670044.ssh_user#}}\npassword: {{#1748527670044.ssh_password#}}\n\
+              Your task is to perform the following steps safely, idempotently, and\
+              \ completely.\nAll application files must be placed under a structured\
+              \ directory and run correctly based on this context: {{#1749624159626.text#}}\n\
+              \n Step 1: Verify Docker and Docker Compose v2\ndocker --version\ndocker\
+              \ compose version\nsystemctl start docker || (dockerd > /var/log/dockerd.log\
+              \ 2>&1 &)\ndocker ps\n\n\n Step 2: Clone Repository\nREPO=\"{{#1748527670044.source_code#}}\"\
+              \n\nattempt=0\nmax_attempts=3\n\nwhile [ $attempt -lt $max_attempts\
+              \ ]; do\n  echo \"Attempt $(($attempt+1)) of $max_attempts...\"\n  rm\
+              \ -rf \"$DEST\"\n  mkdir -p \"$DEST\"\n  git clone \"$REPO\" \"$DEST\"\
+              \ && [ -n \"$(ls -A $DEST 2>/dev/null)\" ] && break\n  echo \" Clone\
+              \ failed or source folder is empty.\"\n  attempt=$((attempt+1))\n  sleep\
+              \ 3\ndone\n\nif [ ! -d \"$DEST/.git\" ] || [ -z \"$(ls -A $DEST 2>/dev/null)\"\
+              \ ]; then\n  echo \" Failed to clone repository after $max_attempts\
+              \ attempts.\"\n  exit 1\nfi\n\nStep 3: Start Application\ncd ~/app/docker\n\
+              docker compose up -d --build\n\n\n Step 4: Confirm Services Are Running\n\
+              docker ps --format '{{.Names}}: {{.Status}}'\n\nIf no container is running\
+              \ or status is not \"Up\", log the full docker-compose output and exit\
+              \ with an error.\n\n Step 5: Run Final Docker Command\ndocker run --rm\
+              \ --privileged --network=host \\\n-v /var/run/docker.sock:/var/run/docker.sock\
+              \ docker-frontend > ~/app/docker/frontend.log 2>&1 &\necho \" docker-frontend\
+              \ launched in background. Logs are in ~/app/docker/frontend.log.\"\n\
+              \n You must include this command, run it after services are confirmed\
+              \ in Step 7, and capture its output or any errors."
+          maximum_iterations:
+            type: constant
+            value: 7
+          model:
+            type: constant
+            value:
+              completion_params:
+                temperature: 0
+              mode: chat
+              model: gemini-2.0-flash-001
+              model_type: llm
+              provider: langgenius/gemini/google
+              type: model-selector
+          query:
+            type: constant
+            value: "You are a Senior DevOps Engineer automating deployment on a remote\
+              \ server via SSH.\nUse the SSH Command tool with the following parameters:\n\
+              host: {{#1748527670044.ssh_host#}}\nport: {{#1748527670044.ssh_port#}}\n\
+              username: {{#1748527670044.ssh_user#}}\npassword: {{#1748527670044.ssh_password#}}\n\
+              Your task is to perform the following steps safely, idempotently, and\
+              \ completely.\nAll application files must be placed under a structured\
+              \ directory and run correctly based on this context: {{#1749624159626.text#}}\n\
+              \n Step 1: Verify Docker and Docker Compose v2\ndocker --version\ndocker\
+              \ compose version\nsystemctl start docker || (dockerd > /var/log/dockerd.log\
+              \ 2>&1 &)\ndocker ps\n\n\n Step 2: Clone Repository\nREPO=\"{{#1748527670044.source_code#}}\"\
+              \n\nattempt=0\nmax_attempts=3\n\nwhile [ $attempt -lt $max_attempts\
+              \ ]; do\n  echo \"Attempt $(($attempt+1)) of $max_attempts...\"\n  rm\
+              \ -rf \"$DEST\"\n  mkdir -p \"$DEST\"\n  git clone \"$REPO\" \"$DEST\"\
+              \ && [ -n \"$(ls -A $DEST 2>/dev/null)\" ] && break\n  echo \" Clone\
+              \ failed or source folder is empty.\"\n  attempt=$((attempt+1))\n  sleep\
+              \ 3\ndone\n\nif [ ! -d \"$DEST/.git\" ] || [ -z \"$(ls -A $DEST 2>/dev/null)\"\
+              \ ]; then\n  echo \" Failed to clone repository after $max_attempts\
+              \ attempts.\"\n  exit 1\nfi\n\nStep 3: Start Application\ncd ~/app/docker\n\
+              docker compose up -d --build\n\n\n Step 4: Confirm Services Are Running\n\
+              docker ps --format '{{.Names}}: {{.Status}}'\n\nIf no container is running\
+              \ or status is not \"Up\", log the full docker-compose output and exit\
+              \ with an error.\n\n Step 5: Run Final Docker Command\ndocker run --rm\
+              \ --privileged --network=host \\\n-v /var/run/docker.sock:/var/run/docker.sock\
+              \ docker-frontend > ~/app/docker/frontend.log 2>&1 &\necho \" docker-frontend\
+              \ launched in background. Logs are in ~/app/docker/frontend.log.\"\n\
+              \n You must include this command, run it after services are confirmed\
+              \ in Step 7, and capture its output or any errors."
+          tools:
+            type: constant
+            value:
+            - enabled: true
+              extra:
+                description: Execute commands on remote servers via SSH
+              parameters:
+                command:
+                  auto: 1
+                  value: null
+                host:
+                  auto: 1
+                  value: null
+                passphrase:
+                  auto: 1
+                  value: null
+                password:
+                  auto: 1
+                  value: null
+                port:
+                  auto: 1
+                  value: null
+                private_key:
+                  auto: 1
+                  value: null
+                username:
+                  auto: 1
+                  value: null
+              provider_name: stvlynn/ssh/ssh
+              schemas:
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The hostname or IP address of the remote server
+                  ja_JP: The hostname or IP address of the remote server
+                  pt_BR: O nome do host ou endereço IP do servidor remoto
+                  zh_Hans: 远程服务器的主机名或IP地址
+                label:
+                  en_US: Host
+                  ja_JP: Host
+                  pt_BR: Host
+                  zh_Hans: 主机
+                llm_description: The hostname or IP address of the remote server to
+                  connect to via SSH.
+                max: null
+                min: null
+                name: host
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The SSH port of the remote server (default 22)
+                  ja_JP: The SSH port of the remote server (default 22)
+                  pt_BR: A porta SSH do servidor remoto (padrão 22)
+                  zh_Hans: 远程服务器的SSH端口（默认22）
+                label:
+                  en_US: Port
+                  ja_JP: Port
+                  pt_BR: Porta
+                  zh_Hans: 端口
+                llm_description: The SSH port of the remote server. Default is 22.
+                max: null
+                min: null
+                name: port
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: number
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The username to authenticate with
+                  ja_JP: The username to authenticate with
+                  pt_BR: O nome de usuário para autenticação
+                  zh_Hans: 用于认证的用户名
+                label:
+                  en_US: Username
+                  ja_JP: Username
+                  pt_BR: Nome de usuário
+                  zh_Hans: 用户名
+                llm_description: The username to authenticate with on the remote server.
+                max: null
+                min: null
+                name: username
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: password
+                form: form
+                human_description:
+                  en_US: Choose between password or private key authentication
+                  ja_JP: Choose between password or private key authentication
+                  pt_BR: Escolha entre autenticação por senha ou chave privada
+                  zh_Hans: 选择密码或私钥认证
+                label:
+                  en_US: Authentication Type
+                  ja_JP: Authentication Type
+                  pt_BR: Tipo de Autenticação
+                  zh_Hans: 认证类型
+                llm_description: The authentication method to use (password or private
+                  key).
+                max: null
+                min: null
+                name: auth_type
+                options:
+                - label:
+                    en_US: Password
+                    ja_JP: Password
+                    pt_BR: Senha
+                    zh_Hans: 密码
+                  value: password
+                - label:
+                    en_US: Private Key
+                    ja_JP: Private Key
+                    pt_BR: Chave Privada
+                    zh_Hans: 私钥
+                  value: key
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: select
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The password for password authentication (required if auth_type
+                    is password)
+                  ja_JP: The password for password authentication (required if auth_type
+                    is password)
+                  pt_BR: A senha para autenticação por senha (obrigatório se o tipo
+                    de autenticação for senha)
+                  zh_Hans: 用于密码认证的密码（如果认证类型为密码则必填）
+                label:
+                  en_US: Password
+                  ja_JP: Password
+                  pt_BR: Senha
+                  zh_Hans: 密码
+                llm_description: The password for password authentication. Required
+                  if auth_type is password.
+                max: null
+                min: null
+                name: password
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The private key for key authentication (required if auth_type
+                    is key)
+                  ja_JP: The private key for key authentication (required if auth_type
+                    is key)
+                  pt_BR: A chave privada para autenticação por chave (obrigatório
+                    se o tipo de autenticação for chave)
+                  zh_Hans: 用于密钥认证的私钥（如果认证类型为私钥则必填）
+                label:
+                  en_US: Private Key
+                  ja_JP: Private Key
+                  pt_BR: Chave Privada
+                  zh_Hans: 私钥
+                llm_description: The private key content for key-based authentication.
+                  Required if auth_type is key.
+                max: null
+                min: null
+                name: private_key
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The passphrase for the private key (if the key is encrypted)
+                  ja_JP: The passphrase for the private key (if the key is encrypted)
+                  pt_BR: A frase-senha para a chave privada (se a chave estiver criptografada)
+                  zh_Hans: 私钥的密码（如果私钥已加密）
+                label:
+                  en_US: Passphrase
+                  ja_JP: Passphrase
+                  pt_BR: Frase-senha
+                  zh_Hans: 密钥口令
+                llm_description: The passphrase for the private key if it is encrypted.
+                  Optional.
+                max: null
+                min: null
+                name: passphrase
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The command to execute on the remote server
+                  ja_JP: The command to execute on the remote server
+                  pt_BR: O comando a ser executado no servidor remoto
+                  zh_Hans: 在远程服务器上执行的命令
+                label:
+                  en_US: Command
+                  ja_JP: Command
+                  pt_BR: Comando
+                  zh_Hans: 命令
+                llm_description: The command to execute on the remote server.
+                max: null
+                min: null
+                name: command
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: string
+              settings:
+                auth_type:
+                  value: password
+              tool_description: Execute commands on remote servers via SSH
+              tool_label: SSH Command Execution
+              tool_name: ssh
+              type: builtin
+            - enabled: true
+              extra:
+                description: A search engine tool built specifically for AI agents
+                  (LLMs), delivering real-time, accurate, and factual results at speed.
+              parameters:
+                days:
+                  auto: 1
+                  value: null
+                query:
+                  auto: 1
+                  value: null
+                search_depth:
+                  auto: 1
+                  value: null
+                time_range:
+                  auto: 1
+                  value: null
+                topic:
+                  auto: 1
+                  value: null
+              provider_name: langgenius/tavily/tavily
+              schemas:
+              - auto_generate: null
+                default: null
+                form: llm
+                human_description:
+                  en_US: The search query you want to execute with Tavily.
+                  ja_JP: The search query you want to execute with Tavily.
+                  pt_BR: The search query you want to execute with Tavily.
+                  zh_Hans: 您想用 Tavily 执行的搜索查询。
+                label:
+                  en_US: Query
+                  ja_JP: Query
+                  pt_BR: Query
+                  zh_Hans: 查询
+                llm_description: The search query.
+                max: null
+                min: null
+                name: query
+                options: []
+                placeholder: null
+                precision: null
+                required: true
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: basic
+                form: llm
+                human_description:
+                  en_US: The depth of the search.
+                  ja_JP: The depth of the search.
+                  pt_BR: The depth of the search.
+                  zh_Hans: 搜索的深度。
+                label:
+                  en_US: Search Depth
+                  ja_JP: Search Depth
+                  pt_BR: Search Depth
+                  zh_Hans: 搜索深度
+                llm_description: The depth of the search. 'basic' for standard search,
+                  'advanced' for more comprehensive results.
+                max: null
+                min: null
+                name: search_depth
+                options:
+                - label:
+                    en_US: Basic
+                    ja_JP: Basic
+                    pt_BR: Basic
+                    zh_Hans: 基本
+                  value: basic
+                - label:
+                    en_US: Advanced
+                    ja_JP: Advanced
+                    pt_BR: Advanced
+                    zh_Hans: 高级
+                  value: advanced
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: select
+              - auto_generate: null
+                default: general
+                form: llm
+                human_description:
+                  en_US: The category of the search.
+                  ja_JP: The category of the search.
+                  pt_BR: The category of the search.
+                  zh_Hans: 搜索的类别。
+                label:
+                  en_US: Topic
+                  ja_JP: Topic
+                  pt_BR: Topic
+                  zh_Hans: 主题
+                llm_description: The category of the search. Options include 'general',
+                  'news', or 'finance'.
+                max: null
+                min: null
+                name: topic
+                options:
+                - label:
+                    en_US: General
+                    ja_JP: General
+                    pt_BR: General
+                    zh_Hans: 一般
+                  value: general
+                - label:
+                    en_US: News
+                    ja_JP: News
+                    pt_BR: News
+                    zh_Hans: 新闻
+                  value: news
+                - label:
+                    en_US: Finance
+                    ja_JP: Finance
+                    pt_BR: Finance
+                    zh_Hans: 金融
+                  value: finance
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: select
+              - auto_generate: null
+                default: 3
+                form: llm
+                human_description:
+                  en_US: The number of days back from the current date to include
+                    in the search results (only applicable when "topic" is "news").
+                  ja_JP: The number of days back from the current date to include
+                    in the search results (only applicable when "topic" is "news").
+                  pt_BR: The number of days back from the current date to include
+                    in the search results (only applicable when "topic" is "news").
+                  zh_Hans: 从当前日期起向前追溯的天数，以包含在搜索结果中（仅当"topic"为"news"时适用）。
+                label:
+                  en_US: Days
+                  ja_JP: Days
+                  pt_BR: Days
+                  zh_Hans: 天数
+                llm_description: The number of days back from the current date to
+                  include in the search results. Only applicable when "topic" is "news".
+                max: null
+                min: 1
+                name: days
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: number
+              - auto_generate: null
+                default: not_specified
+                form: llm
+                human_description:
+                  en_US: The time range back from the current date to filter results.
+                  ja_JP: The time range back from the current date to filter results.
+                  pt_BR: The time range back from the current date to filter results.
+                  zh_Hans: 从当前日期起向后筛选结果的时间范围。
+                label:
+                  en_US: Time Range
+                  ja_JP: Time Range
+                  pt_BR: Time Range
+                  zh_Hans: 时间范围
+                llm_description: The time range back from the current date to filter
+                  results. Options include 'not_specified', 'day', 'week', 'month',
+                  or 'year'.
+                max: null
+                min: null
+                name: time_range
+                options:
+                - label:
+                    en_US: Not Specified
+                    ja_JP: Not Specified
+                    pt_BR: Not Specified
+                    zh_Hans: 不指定
+                  value: not_specified
+                - label:
+                    en_US: Day
+                    ja_JP: Day
+                    pt_BR: Day
+                    zh_Hans: 天
+                  value: day
+                - label:
+                    en_US: Week
+                    ja_JP: Week
+                    pt_BR: Week
+                    zh_Hans: 周
+                  value: week
+                - label:
+                    en_US: Month
+                    ja_JP: Month
+                    pt_BR: Month
+                    zh_Hans: 月
+                  value: month
+                - label:
+                    en_US: Year
+                    ja_JP: Year
+                    pt_BR: Year
+                    zh_Hans: 年
+                  value: year
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: select
+              - auto_generate: null
+                default: 5
+                form: form
+                human_description:
+                  en_US: The maximum number of search results to return.
+                  ja_JP: The maximum number of search results to return.
+                  pt_BR: The maximum number of search results to return.
+                  zh_Hans: 要返回的最大搜索结果数。
+                label:
+                  en_US: Max Results
+                  ja_JP: Max Results
+                  pt_BR: Max Results
+                  zh_Hans: 最大结果数
+                llm_description: The maximum number of search results to return. Range
+                  is 1-20.
+                max: 20
+                min: 1
+                name: max_results
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: number
+              - auto_generate: null
+                default: 0
+                form: form
+                human_description:
+                  en_US: Include a list of query-related images in the response.
+                  ja_JP: Include a list of query-related images in the response.
+                  pt_BR: Include a list of query-related images in the response.
+                  zh_Hans: 在响应中包含与查询相关的图片列表。
+                label:
+                  en_US: Include Images
+                  ja_JP: Include Images
+                  pt_BR: Include Images
+                  zh_Hans: 包含图片
+                llm_description: When set to true, includes a list of query-related
+                  images in the response.
+                max: null
+                min: null
+                name: include_images
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: boolean
+              - auto_generate: null
+                default: 0
+                form: form
+                human_description:
+                  en_US: When include_images is True, adds descriptive text for each
+                    image.
+                  ja_JP: When include_images is True, adds descriptive text for each
+                    image.
+                  pt_BR: When include_images is True, adds descriptive text for each
+                    image.
+                  zh_Hans: 当 include_images 为 True 时，为每个图像添加描述文本。
+                label:
+                  en_US: Include Image Descriptions
+                  ja_JP: Include Image Descriptions
+                  pt_BR: Include Image Descriptions
+                  zh_Hans: 包含图片描述
+                llm_description: When include_images is True and this is set to true,
+                  adds descriptive text for each image.
+                max: null
+                min: null
+                name: include_image_descriptions
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: boolean
+              - auto_generate: null
+                default: 0
+                form: form
+                human_description:
+                  en_US: Include a short answer to the original query in the response.
+                  ja_JP: Include a short answer to the original query in the response.
+                  pt_BR: Include a short answer to the original query in the response.
+                  zh_Hans: 在响应中包含对原始查询的简短回答。
+                label:
+                  en_US: Include Answer
+                  ja_JP: Include Answer
+                  pt_BR: Include Answer
+                  zh_Hans: 包含答案
+                llm_description: When set to true, includes a short answer to the
+                  original query in the response.
+                max: null
+                min: null
+                name: include_answer
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: boolean
+              - auto_generate: null
+                default: 0
+                form: form
+                human_description:
+                  en_US: Include the cleaned and parsed HTML content of each search
+                    result.
+                  ja_JP: Include the cleaned and parsed HTML content of each search
+                    result.
+                  pt_BR: Include the cleaned and parsed HTML content of each search
+                    result.
+                  zh_Hans: 包含每个搜索结果的已清理和解析的HTML内容。
+                label:
+                  en_US: Include Raw Content
+                  ja_JP: Include Raw Content
+                  pt_BR: Include Raw Content
+                  zh_Hans: 包含原始内容
+                llm_description: When set to true, includes the cleaned and parsed
+                  HTML content of each search result.
+                max: null
+                min: null
+                name: include_raw_content
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: boolean
+              - auto_generate: null
+                default: null
+                form: form
+                human_description:
+                  en_US: A comma-separated list of domains to specifically include
+                    in the search results.
+                  ja_JP: A comma-separated list of domains to specifically include
+                    in the search results.
+                  pt_BR: A comma-separated list of domains to specifically include
+                    in the search results.
+                  zh_Hans: 要在搜索结果中特别包含的域的逗号分隔列表。
+                label:
+                  en_US: Include Domains
+                  ja_JP: Include Domains
+                  pt_BR: Include Domains
+                  zh_Hans: 包含域
+                llm_description: A comma-separated list of domains to specifically
+                  include in the search results.
+                max: null
+                min: null
+                name: include_domains
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: string
+              - auto_generate: null
+                default: null
+                form: form
+                human_description:
+                  en_US: A comma-separated list of domains to specifically exclude
+                    from the search results.
+                  ja_JP: A comma-separated list of domains to specifically exclude
+                    from the search results.
+                  pt_BR: A comma-separated list of domains to specifically exclude
+                    from the search results.
+                  zh_Hans: 要从搜索结果中特别排除的域的逗号分隔列表。
+                label:
+                  en_US: Exclude Domains
+                  ja_JP: Exclude Domains
+                  pt_BR: Exclude Domains
+                  zh_Hans: 排除域
+                llm_description: A comma-separated list of domains to specifically
+                  exclude from the search results.
+                max: null
+                min: null
+                name: exclude_domains
+                options: []
+                placeholder: null
+                precision: null
+                required: false
+                scope: null
+                template: null
+                type: string
+              settings:
+                exclude_domains:
+                  value: null
+                include_answer:
+                  value: 0
+                include_domains:
+                  value: null
+                include_image_descriptions:
+                  value: 0
+                include_images:
+                  value: 0
+                include_raw_content:
+                  value: 0
+                max_results:
+                  value: 5
+              tool_description: A search engine tool built specifically for AI agents
+                (LLMs), delivering real-time, accurate, and factual results at speed.
+              tool_label: Tavily Search
+              tool_name: tavily_search
+              type: builtin
+        agent_strategy_label: FunctionCalling
+        agent_strategy_name: function_calling
+        agent_strategy_provider_name: langgenius/agent/agent
+        desc: ''
+        output_schema: null
+        plugin_unique_identifier: langgenius/agent:0.0.15@89d496aa9b23fcd1ef9add8cfcbadeaeb4eb5c30ff8d76f7e6c9d59c46d2e2f5
+        selected: false
+        title: Agent (1)
+        type: agent
+      height: 198
+      id: '17496256259110'
+      position:
+        x: 636
+        y: 298
+      positionAbsolute:
+        x: 636
+        y: 298
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.0-flash
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: c8ad8886-4463-44a9-a15e-7194643472cc
+          role: system
+          text: "# ROLE\nBạn là một chuyên gia kiểm thử hiệu năng (Performance Testing\
+            \ Expert). Nhiệm vụ của bạn là phân tích các mô tả yêu cầu kiểm thử từ\
+            \ URS (User Requirement Specification) hoặc test case, và phân loại chúng\
+            \ theo các loại kiểm thử hiệu năng phù hợp.\n\n# ACTION\nKhi được cung\
+            \ cấp một mô tả test, hãy thực hiện:\n1. Phân tích nội dung và mục tiêu\
+            \ test.\n2. Xác định loại test hiệu năng phù hợp nhất, dựa trên các loại\
+            \ sau:\n   - load_test\n   - stess_test\n   - soak_test\n   - peak_test\n\
+            \   - scalability_test\n   - capacity_test\n\n# CONTEXT\n{{#1749632409530.text#}}\n\
+            \n# FEEDBACK\nNếu không thể xác định được loại test, hãy đưa `\"test_type\"\
+            : \"Unclassified\"` và giải thích ngắn gọn lý do.\n\n\n}\n\nHãy sẵn sàng\
+            \ nhận nhiều test case và trả về JSON cho từng cái.\n"
+        selected: false
+        structured_output:
+          schema:
+            additionalProperties: false
+            properties:
+              reasoning:
+                type: string
+              tags:
+                items:
+                  type: string
+                type: array
+              test_name:
+                type: string
+              test_type:
+                type: string
+            required: []
+            type: object
+        structured_output_enabled: false
+        title: LLM 3
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1749632354583'
+      position:
+        x: 503.3192262271848
+        y: 762.0568184038258
+      positionAbsolute:
+        x: 503.3192262271848
+        y: 762.0568184038258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        is_array_file: true
+        selected: false
+        title: Doc Extractor
+        type: document-extractor
+        variable_selector:
+        - '1748527670044'
+        - urs_document
+      height: 92
+      id: '1749632409530'
+      position:
+        x: 196.11933557923288
+        y: 780.4658461782925
+      positionAbsolute:
+        x: 196.11933557923288
+        y: 780.4658461782925
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 437bace9-2dab-4885-842c-cedc9e396fb0
+            value: load_test
+            varType: object
+            variable_selector:
+            - '1749632354583'
+            - structured_output
+            - test_type
+          id: 'true'
+          logical_operator: and
+        - case_id: a7c17443-40c0-495d-860f-0b671a58d075
+          conditions:
+          - comparison_operator: is
+            id: 1a0bce0c-b7f0-45a4-91b1-3e83d9404628
+            value: stess_test
+            varType: object
+            variable_selector:
+            - '1749632354583'
+            - structured_output
+            - test_type
+          id: a7c17443-40c0-495d-860f-0b671a58d075
+          logical_operator: and
+        - case_id: 22770411-5520-4564-b8bc-5d9838903bd8
+          conditions:
+          - comparison_operator: is
+            id: 605311e4-f38a-4827-9aa7-be2b2e044410
+            value: soak_test
+            varType: object
+            variable_selector:
+            - '1749632354583'
+            - structured_output
+            - test_type
+          id: 22770411-5520-4564-b8bc-5d9838903bd8
+          logical_operator: and
+        - case_id: 7339dc79-615e-463d-9369-a3a919fe72ce
+          conditions:
+          - comparison_operator: is
+            id: ff447955-241d-4a28-a525-ffe4c933e4ee
+            value: peak_test
+            varType: object
+            variable_selector:
+            - '1749632354583'
+            - structured_output
+            - test_type
+          logical_operator: and
+        - case_id: e212c016-3ae2-4b6f-9d9b-cedaa6c5ad4f
+          conditions:
+          - comparison_operator: is
+            id: 65436862-971c-49d8-8309-da8bac354d5b
+            value: scalability_test
+            varType: object
+            variable_selector:
+            - '1749632354583'
+            - structured_output
+            - test_type
+          logical_operator: and
+        - case_id: 31413999-96b7-4647-9089-08963abb2f0d
+          conditions:
+          - comparison_operator: is
+            id: 71ff5062-dfcc-4f65-8941-a5b699910868
+            value: capacity_test
+            varType: object
+            variable_selector:
+            - '1749632354583'
+            - structured_output
+            - test_type
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: IF/ELSE
+        type: if-else
+      height: 366
+      id: '1749632828598'
+      position:
+        x: 806.4563051860391
+        y: 880.5646869512206
+      positionAbsolute:
+        x: 806.4563051860391
+        y: 880.5646869512206
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-2.0-flash
+          provider: langgenius/gemini/google
+        prompt_template:
+        - id: e9e3459a-6ec1-4998-81fa-9bad6184f2b2
+          role: system
+          text: "# ROLE\nBạn là một chuyên gia tự động hóa kiểm thử hiệu năng (Performance\
+            \ Test Automation Expert). Bạn sẽ tạo script kiểm thử hiệu năng dựa trên\
+            \ loại test đã được phân loại trước.\n\n# ACTION\nVới mỗi test case trong\
+            \ danh sách đầu vào, hãy tạo một đoạn mã kiểm thử hiệu năng tương ứng\
+            \ với test_type. Tùy vào loại test, chọn công cụ phù hợp và tạo script\
+            \ mẫu.\n\n# CONTEXT\nCác loại test và công cụ khuyên dùng:\n{{#1749632354583.text#}}\n\
+            URL cần test {{#1748527670044.url#}}\nTest data trong {{#1749632409530.text#}}\n\
+            - **load_test** → Dùng `k6` (JavaScript) hoặc `Locust` (Python) nếu hành\
+            \ vi cần mô phỏng.\n- **soak_test** → Dùng `k6` với `duration` dài (>=\
+            \ 30 phút).\n- **stress_test** → Dùng `k6` với ramp-up stages đến số lượng\
+            \ VU rất cao.\n- **latency_test** → Dùng `k6` để đo thời gian phản hồi\
+            \ hoặc `Playwright` để đo UI.\n- **stability_test** → Dùng `k6` hoặc script\
+            \ kiểm tra JS errors (có thể kèm browser).\n- **network_test** → Dùng\
+            \ `k6` để gửi nhiều request lọc (GET/POST) và đo thời gian.\n\n# FEEDBACK\n\
+            Nếu không đủ dữ kiện để tạo test script cụ thể, hãy phản hồi `\"script\"\
+            : null` và đưa lý do ngắn gọn.\n\n# TUNING\nTrả kết quả cho từng test\
+            \ case theo cấu trúc JSON sau:\n\n{\n  \"test_case\": \"<test_case_id>\"\
+            ,\n  \"test_type\": \"<test_type>\",\n  \"tool\": \"<tool_used>\",\n \
+            \ \"script\": \"<performance_test_script>\",\n  \"notes\": \"<lý do chọn\
+            \ tool, đặc điểm đáng chú ý nếu có>\"\n}\n\n## Lưu ý:\n- Tạo script tối\
+            \ thiểu chạy được với CLI.\n- Dùng `k6` làm mặc định nếu không có chỉ\
+            \ định cụ thể.\n\n## Ví dụ đầu vào:\n{\n  \"test_case\": \"TC-REQ-THR1-LOGIN\"\
+            ,\n  \"test_type\": \"load_test\",\n  \"reason\": \"This test measures\
+            \ the TPS for login attempts under a repeated concurrent load.\"\n}\n\n\
+            ## Ví dụ đầu ra:\n{\n  \"test_case\": \"TC-REQ-THR1-LOGIN\",\n  \"test_type\"\
+            : \"load_test\",\n  \"tool\": \"k6\",\n  \"script\": \"import http from\
+            \ 'k6/http';\\nimport { sleep } from 'k6';\\n\\nexport let options = {\\\
+            n  vus: 50,\\n  duration: '1m',\\n};\\n\\nexport default function () {\\\
+            n  const url = 'https://yourdomain.com/login';\\n  const payload = JSON.stringify({\
+            \ username: 'user', password: 'pass' });\\n  const params = { headers:\
+            \ { 'Content-Type': 'application/json' } };\\n\\n  http.post(url, payload,\
+            \ params);\\n  sleep(1);\\n}\",\n  \"notes\": \"Sử dụng k6 để mô phỏng\
+            \ 50 người dùng gửi login requests trong 1 phút.\"\n}\n\nHãy xử lý danh\
+            \ sách đầu vào sau:\n"
+        selected: true
+        title: LLM 4
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 90
+      id: '1749632961954'
+      position:
+        x: 806.4563051860391
+        y: 762.0568184038258
+      positionAbsolute:
+        x: 806.4563051860391
+        y: 762.0568184038258
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1749632961954'
+          - text
+          variable: text
+        - value_selector:
+          - '1749632354583'
+          - structured_output
+          variable: structured_output
+        selected: false
+        title: End 3
+        type: end
+      height: 116
+      id: '1749632974802'
+      position:
+        x: 1111.3192262271848
+        y: 762.0568184038258
+      positionAbsolute:
+        x: 1111.3192262271848
+        y: 762.0568184038258
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 28.776373594715096
+      y: -513.3073562422812
+      zoom: 1.008841506680681
