@@ -4,6 +4,7 @@ import platform, psutil, cpuinfo, socket, subprocess, os, tempfile, shutil
 from urllib.parse import urlparse
 import git
 from read_source import generate_llm_chunks_inline
+import yaml  # Thêm thư viện này để kiểm tra file docker-compose.yml
 
 app = FastAPI()
 
@@ -52,6 +53,33 @@ def get_device_info():
 def read_device_info():
     return JSONResponse(content=get_device_info())
 
+def check_docker_files(path):
+    dockerfile_path = os.path.join(path, "Dockerfile")
+    compose_path = os.path.join(path, "docker-compose.yml")
+    is_docker = False
+
+    # Kiểm tra sự tồn tại
+    if os.path.isfile(dockerfile_path) and os.path.isfile(compose_path):
+        # Kiểm tra Dockerfile có dòng FROM không
+        try:
+            with open(dockerfile_path, "r", encoding="utf-8") as f:
+                dockerfile_content = f.read()
+            has_from = any(line.strip().startswith("FROM") for line in dockerfile_content.splitlines())
+        except Exception:
+            has_from = False
+
+        # Kiểm tra docker-compose.yml có hợp lệ và có service không
+        try:
+            with open(compose_path, "r", encoding="utf-8") as f:
+                compose_content = yaml.safe_load(f)
+            has_service = isinstance(compose_content, dict) and "services" in compose_content
+        except Exception:
+            has_service = False
+
+        is_docker = has_from and has_service
+
+    return True
+
 @app.get("/source-info")
 def read_source_info(path: str = None, git_url: str = None):
     try:
@@ -59,14 +87,16 @@ def read_source_info(path: str = None, git_url: str = None):
             temp_dir = tempfile.mkdtemp()
             git.Repo.clone_from(git_url, temp_dir)
             chunks = generate_llm_chunks_inline(temp_dir)
+            is_docker = check_docker_files(temp_dir)
             shutil.rmtree(temp_dir)
         elif path:
             if not os.path.exists(path):
                 return JSONResponse(content={"error": f"Path '{path}' not found"}, status_code=400)
             chunks = generate_llm_chunks_inline(path)
+            is_docker = check_docker_files(path)
         else:
             return JSONResponse(content={"error": "Missing 'path' or 'git_url'"}, status_code=400)
 
-        return JSONResponse(content={"status": "success", "chunks": chunks})
+        return JSONResponse(content={"status": "success", "chunks": chunks, "isDocker": is_docker})
     except Exception as e:
         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)

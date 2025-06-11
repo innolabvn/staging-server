@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+psutil
+py-cpuinfo
+pyyaml
+gitpython
