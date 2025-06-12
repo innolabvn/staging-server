@@ -45,6 +45,6 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /
 # Cho phép user "admin" sử dụng docker mà không cần sudo
 RUN usermod -aG docker admin
 
-EXPOSE 22 80 8080 5000
+EXPOSE 22
 
 CMD ["/usr/sbin/sshd", "-D"]

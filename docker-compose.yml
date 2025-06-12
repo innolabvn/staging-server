@@ -9,7 +9,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./collect_device:/app
+      - ./k6/scripts:/k6/scripts
 
   ssh-server:
     build:
@@ -21,4 +21,4 @@ services:
       - "2222:22"
       - "8080:8080"
       - "5000:5000"
-    restart: unless-stopped 
+    restart: unless-stopped
