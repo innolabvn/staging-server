@@ -9,7 +9,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./k6/scripts:/k6/scripts
+    - ./k6pro/scripts:/scripts 
+      # - ./k6/scripts:/k6/scripts
 
   ssh-server:
     build:
@@ -23,3 +24,10 @@ services:
       - "5000:5000"
       - "9100:9100"
     restart: unless-stopped
+
+  k6_prometheus:
+    image: grafana/k6:latest
+    container_name: k6_prometheus
+    entrypoint: tail -f /dev/null
+    volumes:
+      - ./k6pro/scripts:/scripts

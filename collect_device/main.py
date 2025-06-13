@@ -37,17 +37,33 @@ def read_source_info(path: str = None, git_url: str = None):
 @app.post("/save-k6-script")
 def save_k6_script_route(payload: dict = Body(...)):
     test_cases = payload.get("payload")
+
     if not isinstance(test_cases, list):
         return JSONResponse(content={"status": "error", "message": "Missing or invalid 'payload' (must be a list)"}, status_code=400)
     results = []
+
     for test_case in test_cases:
         name = test_case.get("test_case")
         script = test_case.get("script")
-        tool = test_case.get("tool", "k6").lower()
-        if not name or not script:
-            results.append({"test_case": name, "status": "error", "message": "Missing 'test_case' or 'script'"})
+        if not name:
+            results.append({
+                "test_case": None,
+                "status": "error",
+                "message": "Missing 'test_case'"
+            })
             continue
-        ext = ".js" if tool in ["k6", "playwright"] else ""
+
+        if script is None:
+            results.append({
+                "test_case": name,
+                "status": "skipped",
+                "message": "Script is null, file not saved"
+            })
+            continue
+
+        ext = ".js" if not name.endswith(".js") else ""
+
+
         try:
             file_path = save_k6_script(f"{name}{ext}", script)
             results.append({"test_case": name, "status": "success", "file_path": file_path})
