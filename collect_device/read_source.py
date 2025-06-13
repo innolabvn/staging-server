@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Dict, List, Union
 
 IGNORE_PATTERNS = ['.git', '__pycache__', '.pytest_cache', '.venv', 'venv']
-READABLE_EXTENSIONS = ['py', 'js', 'ts', 'tsx', 'java', 'go', 'html', 'css', 'json', 'yml', 'yaml']
+READABLE_EXTENSIONS = ['py', 'js', 'ts', 'tsx', 'java', 'go', 'html', 'css', 'json', 'yml', 'yaml', 'Dockerfile']
 
 def read_file_content(file_path: Path, max_chars: int = 3000) -> str:
     try:
@@ -58,7 +58,8 @@ def generate_llm_chunks_inline(directory_path: Union[str, Path]) -> List[str]:
         if node["type"] == "file":
             file_path = Path(node.get("path", ""))
             ext = node.get("extension", "")
-            if ext in READABLE_EXTENSIONS:
+            # Check if file is readable either by extension or by name
+            if ext in READABLE_EXTENSIONS or file_path.name in READABLE_EXTENSIONS:
                 content = read_file_content(file_path)
                 chunk = f"# File: {file_path}\n{content}\n\n=== END OF FILE ===\n\n"
                 chunks.append(chunk)

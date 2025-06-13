@@ -43,18 +43,16 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /
     apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin && \
     rm -rf /var/lib/apt/lists/*
 
-# Cho phép user "admin" sử dụng docker mà không cần sudo
-RUN usermod -aG docker admin
-
 # Download and install Node Exporter
 RUN wget https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz && \
     tar -xzf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz && \
     mv node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64/node_exporter /usr/local/bin/ && \
     rm -rf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64*
+# Cho phép user "admin" sử dụng docker mà không cần sudo
+RUN usermod -aG docker admin
 
 # Expose SSH and Node Exporter ports
-EXPOSE 22
-EXPOSE 9100
+EXPOSE 22 9100
 
 # Start both sshd and node_exporter
 CMD /usr/sbin/sshd && /usr/local/bin/node_exporter --web.listen-address="0.0.0.0:9100"
