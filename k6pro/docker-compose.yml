@@ -1,0 +1,30 @@
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - k6-net
+    extra_hosts:
+      - "172.30.240.95:host-gateway"
+
+  k6:
+    image: grafana/k6
+    container_name: k6
+    user: "0"
+    volumes:
+      - ./k6/scripts:/k6/scripts
+      - ./k6/results:/k6/results
+      - ./k6/k6.sh:/run-k6.sh
+    entrypoint: ["/bin/sh", "/run-k6.sh"]
+    ports:
+      - "6565:6565"
+    networks:
+      - k6-net
+
+networks:
+  k6-net:
+    driver: bridge

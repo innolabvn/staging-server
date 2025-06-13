@@ -1,6 +1,7 @@
 FROM ubuntu:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV NODE_EXPORTER_VERSION=1.8.1
 
 # Cập nhật hệ thống và cài đặt các gói cần thiết
 RUN apt-get update && \
@@ -45,6 +46,15 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /
 # Cho phép user "admin" sử dụng docker mà không cần sudo
 RUN usermod -aG docker admin
 
-EXPOSE 22
+# Download and install Node Exporter
+RUN wget https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz && \
+    tar -xzf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz && \
+    mv node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64/node_exporter /usr/local/bin/ && \
+    rm -rf node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64*
 
-CMD ["/usr/sbin/sshd", "-D"]
+# Expose SSH and Node Exporter ports
+EXPOSE 22
+EXPOSE 9100
+
+# Start both sshd and node_exporter
+CMD /usr/sbin/sshd && /usr/local/bin/node_exporter --web.listen-address="0.0.0.0:9100"
